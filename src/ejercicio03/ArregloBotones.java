@@ -27,21 +27,29 @@ public class ArregloBotones extends JFrame implements ActionListener{
     private final int VALORES=10;
     private String clave="31416";
     private String claveX="";
+    private JButton acceder;
+    private Integer intentos;
+   
     
     public ArregloBotones(){
     
         JFrame marco=new JFrame("Ejemplo Grid");
-        marco.setLayout(new GridLayout(3,4,2,2));
+        marco.setLayout(new GridLayout(4,4,2,2));
         botones=new JButton[VALORES];
         tecleado= new JLabel("");
+        intentos=0;
+        acceder=new JButton("Acceder");
+        acceder.addActionListener(this);
         for (int i = 0; i < VALORES; i++) {
            botones[i]= new JButton(""+i);
            botones[i].setBackground(color[i]);
            botones[i].addActionListener(this);
+           botones[i].setToolTipText(color[i].toString());
            marco.add(botones[i]);
         }
         
         marco.add(tecleado);
+        marco.add(acceder);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         marco.setSize(400,300);
         marco.setVisible(true);
@@ -53,9 +61,20 @@ public class ArregloBotones extends JFrame implements ActionListener{
         JButton b=(JButton) e.getSource();
         claveX=claveX+b.getText();
         tecleado.setText(claveX);
-        if(claveX.equals(clave)){
-          JOptionPane.showMessageDialog(null,"Clave Correcta");
-        }
+         if(claveX.equals(clave)){
+             JOptionPane.showMessageDialog(null,"Clave Correcta");
+             }
+        if(e.getSource()==acceder){
+          claveX="";
+          tecleado.setText("");
+          intentos++;
+         if(intentos>3){
+           acceder.removeActionListener(this);
+           acceder.setToolTipText("Acceso denegado");
+         JOptionPane.showMessageDialog(null,"Acceso denegado");
+         
+         }
+       }
     }
     
     public static void main(String[]args){
